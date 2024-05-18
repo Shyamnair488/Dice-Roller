@@ -1,0 +1,89 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #282c34;
+    color: #61dafb;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    background: #20232a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.controls label {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.controls input {
+    padding: 5px;
+    font-size: 1rem;
+    width: 50px;
+    margin-right: 10px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #20232a;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #21a1f1;
+}
+
+#dice-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+pre.die {
+    background: #61dafb;
+    color: #20232a;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+pre.die.rolling {
+    animation: roll-animation 0.5s infinite;
+}
+
+#total-container {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+@keyframes roll-animation {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(90deg); }
+    50% { transform: rotate(180deg); }
+    75% { transform: rotate(270deg); }
+    100% { transform: rotate(360deg); }
+}

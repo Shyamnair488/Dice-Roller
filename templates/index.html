@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Interactive Dice Roller</h1>
+        </header>
+        <main>
+            <div class="controls">
+                <label for="num_of_dice">Number of Dice:</label>
+                <input type="number" id="num_of_dice" value="1" min="1" max="10">
+                <button onclick="startRolling()">Roll Dice</button>
+            </div>
+            <div id="dice-container"></div>
+            <div id="total-container"></div>
+        </main>
+    </div>
+
+    <script>
+        async function rollDice() {
+            const num_of_dice = document.getElementById('num_of_dice').value;
+            const response = await fetch(`/roll_dice/${num_of_dice}`);
+            const data = await response.json();
+
+            const diceContainer = document.getElementById('dice-container');
+            const totalContainer = document.getElementById('total-container');
+            diceContainer.innerHTML = '';
+            totalContainer.innerHTML = '';
+
+            data.dice_faces.forEach(die => {
+                const dieElement = document.createElement('pre');
+                dieElement.textContent = die.join('\n');
+                dieElement.classList.add('die');
+                diceContainer.appendChild(dieElement);
+            });
+
+            totalContainer.textContent = `Total: ${data.total}`;
+        }
+
+        function startRolling() {
+            const num_of_dice = document.getElementById('num_of_dice').value;
+            const diceContainer = document.getElementById('dice-container');
+            diceContainer.innerHTML = '';
+
+            for (let i = 0; i < num_of_dice; i++) {
+                const dieElement = document.createElement('pre');
+                dieElement.classList.add('die', 'rolling');
+                diceContainer.appendChild(dieElement);
+            }
+
+            const interval = setInterval(() => {
+                const dice = document.querySelectorAll('.rolling');
+                dice.forEach(die => {
+                    die.textContent = getRandomDiceFace();
+                });
+            }, 100);
+
+            setTimeout(async () => {
+                clearInterval(interval);
+                await rollDice();
+            }, 5000);
+        }
+
+        function getRandomDiceFace() {
+            const faces = [
+                "┌─────────┐\n│         │\n│    ●    │\n│         │\n└─────────┘",
+                "┌─────────┐\n│  ●      │\n│         │\n│      ●  │\n└─────────┘",
+                "┌─────────┐\n│  ●      │\n│    ●    │\n│      ●  │\n└─────────┘",
+                "┌─────────┐\n│  ●   ●  │\n│         │\n│  ●   ●  │\n└─────────┘",
+                "┌─────────┐\n│  ●   ●  │\n│    ●    │\n│  ●   ●  │\n└─────────┘",
+                "┌─────────┐\n│  ●   ●  │\n│  ●   ●  │\n│  ●   ●  │\n└─────────┘"
+            ];
+            return faces[Math.floor(Math.random() * faces.length)];
+        }
+    </script>
+</body>
+</html>
